@@ -913,10 +913,24 @@ function ttrust_pings($comment, $args, $depth) {
 // Pagination function // http://goo.gl/njhZ
 /////////////////////////////////////////////////////////////
 
+// Updated, added this function to get the current page, pagination was not working
+function get_url_var($name)
+{
+    $strURL = $_SERVER['REQUEST_URI'];
+    $arrVals = split("/",$strURL);
+    $found = 0;
+    foreach ($arrVals as $index => $value) 
+    {
+        if($value == $name) $found = $index;
+    }
+    $place = $found + 1;
+    return ($found == 0) ? 1 : $arrVals[$place];
+}
+
 function kriesi_pagination($pages = '', $range = 2) {  
      $showitems = ($range * 2)+1;  
 
-     global $paged;
+     $paged = get_url_var("page");
      if(empty($paged)) $paged = 1;
 
      if($pages == '')
@@ -960,7 +974,6 @@ function jptweak_remove_share() {
 }
  
 add_action( 'loop_start', 'jptweak_remove_share' );
-
 
 
 ?>

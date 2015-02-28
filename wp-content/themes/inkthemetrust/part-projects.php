@@ -1,3 +1,5 @@
+<?php $posts_per_page = 24; ?>
+
 <div id="projects" class="clearfix">		
 	<?php get_template_part( 'part-loading'); ?>
 	<?php $page_skills = get_post_meta($post->ID, "_ttrust_page_skills_value", true); ?>
@@ -32,8 +34,10 @@
 			<?php $s = get_term_by( 'slug', trim(htmlentities($skill)), 'skill'); ?>
 			<?php if($s) { $skill_slugs = $s->slug; } ?>
 		<?php endif; 	
-
-		query_posts( 'skill='.$skill_slugs.'&post_type=project&posts_per_page=200' );
+		$paged = get_url_var("page");
+		// $offset = ($page - 1) * $posts_per_page;
+		// echo $offset
+		query_posts( 'skill='.$skill_slugs.'&post_type=project&posts_per_page='.$posts_per_page.'&paged='.$paged );
 
 	else : // if not, use all the skills ?>
 
@@ -50,7 +54,9 @@
 				$j++;
 			}?>
 		</ul>
-		<?php query_posts( 'post_type=project&posts_per_page=200' );
+		<?php 
+		$paged = get_url_var("page");
+		query_posts( 'post_type=project&posts_per_page='.$posts_per_page.'&paged='.$paged );
 
 	endif; ?>
 	
@@ -71,6 +77,7 @@
 
 	<?php endwhile; ?>
 	</div>
+
+	<?php get_template_part( 'part-pagination'); ?>	
 	<?php wp_reset_query();?>
 </div>
-
